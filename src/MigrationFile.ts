@@ -13,12 +13,12 @@ export default class MigrationFile {
   public tableName = ''
 
   /**
-   * Method Up.
+   * Method up.
    */
   public up: MigrationAction[] = []
 
   /**
-   * Method Down.
+   * Method down.
    */
   public down: MigrationAction[] = []
 

@@ -11,6 +11,6 @@ export default abstract class CreatableActionParser extends SchemaMemberParser {
    * Parse a Call Expression Node.
    */
   public static parse(ceNode: CallExpression): MigrationAction | undefined {
-    return
+    return undefined
   }
 }

@@ -10,7 +10,7 @@ import TableParser from './schema/TableParser'
 import WithSchemaParser from './schema/WithSchemaParser'
 
 /**
- * Schema Parser parses schema builder into migration actions.
+ * Schema parser parses schema builder into migration actions.
  */
 export default abstract class SchemaParser {
   /**

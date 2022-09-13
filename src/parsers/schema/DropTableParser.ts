@@ -4,7 +4,7 @@ import MigrationAction from '../../actions/MigrationAction'
 import DropTableAction from '../../actions/schema/DropTableAction'
 
 /**
- * Drop Table Parser parses the dropTable method.
+ * Drop table parser parses the dropTable method.
  */
 export default abstract class DropTableParser extends CreatableActionParser {
   /**

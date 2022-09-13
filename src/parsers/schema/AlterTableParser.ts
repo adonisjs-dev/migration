@@ -4,7 +4,7 @@ import MigrationAction from '../../actions/MigrationAction'
 import AlterTableAction from '../../actions/schema/AlterTableAction'
 
 /**
- * Alter Table Parser parses the alterTable method.
+ * Alter table parser parses the alterTable method.
  */
 export default abstract class AlterTableParser extends CreatableActionParser {
   /**

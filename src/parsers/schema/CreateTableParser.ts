@@ -4,7 +4,7 @@ import MigrationAction from '../../actions/MigrationAction'
 import CreateTableAction from '../../actions/schema/CreateTableAction'
 
 /**
- * Create Table Parser parses the createTable method.
+ * Create table parser parses the createTable method.
  */
 export default abstract class CreateTableParser extends CreatableActionParser {
   /**
