@@ -115,7 +115,7 @@ export default abstract class SchemaParser {
     const propertyAccessExpressions = mdNode.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression)
     const thisSchemaPropertyAccessExpressions = propertyAccessExpressions.filter((paeNode) => {
       const paeChildren = paeNode.forEachChildAsArray()
-      const isThisKeyword = paeChildren[0].getKind() === SyntaxKind.ThisKeyword
+      const isThisKeyword = paeChildren[0].asKind(SyntaxKind.ThisKeyword)
       const identifier = paeChildren[1].asKind(SyntaxKind.Identifier)
 
       return isThisKeyword && identifier && identifier.getText() === 'schema'

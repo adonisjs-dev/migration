@@ -15,7 +15,7 @@ export default abstract class DropTableParser extends CreatableActionParser {
   /**
    * Parse a Call Expression Node.
    */
-  public static parse(ceNode: CallExpression): MigrationAction | undefined {
+  public static parse(ceNode: CallExpression): MigrationAction {
     return new DropTableAction()
   }
 }
