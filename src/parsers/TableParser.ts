@@ -1,7 +1,6 @@
 import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier } from 'ts-morph'
 import TableAction from '../actions/TableAction'
 import TableMemberParser from './table/TableMemberParser'
-import CreateAlterColumnActionParser from './table/CreateAlterColumnActionParser'
 import CreatableActionParser from './table/CreatableActionParser'
 import PropertyParser from './table/PropertyParser'
 import IncrementsParser from './table/IncrementsParser'
@@ -29,6 +28,8 @@ export default abstract class TableParser {
     const tableIds = this.getTableIdentifiers(funcNode)
     tableIds.forEach((tableId) => {
       const action = this.parseAction(tableId)
+      console.log('action', action)
+
       if (!action) return
 
       const properties = this.parseProperties(tableId)
@@ -61,16 +62,10 @@ export default abstract class TableParser {
       if (!ceNode) return undefined
 
       if (parser) {
-        if (parser.prototype instanceof CreateAlterColumnActionParser) {
-          const isAlterAction = this.isAlterPresent(tableIdentifier)
-
-          try {
-            return (parser as typeof CreateAlterColumnActionParser).parse(ceNode, isAlterAction)
-          } catch {
-            return undefined
-          }
-        } else {
+        try {
           return parser.parse(ceNode)
+        } catch {
+          return undefined
         }
       }
 
@@ -78,31 +73,6 @@ export default abstract class TableParser {
     }
 
     return undefined
-  }
-
-  /**
-   * Search for the presence of the alter method in the expression.
-   */
-  private static isAlterPresent(tableIdentifier: Identifier): boolean {
-    let currentNode = tableIdentifier.getParentIfKind(SyntaxKind.PropertyAccessExpression)
-
-    while (currentNode) {
-      const paeChildren = currentNode.forEachChildAsArray()
-
-      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier)
-      if (!identifier) return false
-
-      const identifierText = identifier.getText()
-
-      const ceNode = currentNode.getParentIfKind(SyntaxKind.CallExpression)
-      if (!ceNode) return false
-
-      if (identifierText === 'alter') return true
-
-      currentNode = ceNode.getParentIfKind(SyntaxKind.PropertyAccessExpression)
-    }
-
-    return false
   }
 
   /**
