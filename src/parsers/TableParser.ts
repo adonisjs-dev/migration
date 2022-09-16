@@ -5,6 +5,7 @@ import CreatableActionParser from './table/CreatableActionParser'
 import PropertyParser from './table/PropertyParser'
 import IncrementsParser from './table/IncrementsParser'
 import BigIncrementsParser from './table/BigIncrementsParser'
+import IntegerParser from './table/IntegerParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -13,7 +14,11 @@ export default abstract class TableParser {
   /**
    * An array of the nested creatable action parsers.
    */
-  private static readonly actionParsers: typeof CreatableActionParser[] = [IncrementsParser, BigIncrementsParser]
+  private static readonly actionParsers: typeof CreatableActionParser[] = [
+    IncrementsParser,
+    BigIncrementsParser,
+    IntegerParser,
+  ]
 
   /**
    * An array of the nested property parsers.
@@ -28,8 +33,6 @@ export default abstract class TableParser {
     const tableIds = this.getTableIdentifiers(funcNode)
     tableIds.forEach((tableId) => {
       const action = this.parseAction(tableId)
-      console.log('action', action)
-
       if (!action) return
 
       const properties = this.parseProperties(tableId)
