@@ -8,7 +8,7 @@ import AbsentColumnNameException from '../../exceptions/AbsentColumnNameExceptio
 /**
  * Date parser parses the date column method.
  */
-export default abstract class DateParser extends CreatableActionParser {
+export default abstract class DatetimeParser extends CreatableActionParser {
   /**
    * Identifier.
    */
