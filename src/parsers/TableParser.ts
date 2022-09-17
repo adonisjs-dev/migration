@@ -7,6 +7,7 @@ import IncrementsParser from './table/IncrementsParser'
 import BigIncrementsParser from './table/BigIncrementsParser'
 import IntegerParser from './table/IntegerParser'
 import BigIntegerParser from './table/BigIntegerParser'
+import TextParser from './table/TextParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -20,6 +21,7 @@ export default abstract class TableParser {
     BigIncrementsParser,
     IntegerParser,
     BigIntegerParser,
+    TextParser,
   ]
 
   /**
