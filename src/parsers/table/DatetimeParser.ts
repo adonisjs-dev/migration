@@ -6,7 +6,7 @@ import DatetimeOptions from '../../interfaces/DatetimeOptions'
 import AbsentColumnNameException from '../../exceptions/AbsentColumnNameException'
 
 /**
- * Date parser parses the date column method.
+ * Datetime parser parses the datetime column method.
  */
 export default abstract class DatetimeParser extends CreatableActionParser {
   /**
