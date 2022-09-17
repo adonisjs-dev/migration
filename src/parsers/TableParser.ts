@@ -13,6 +13,7 @@ import FloatParser from './table/FloatParser'
 import DoubleParser from './table/DoubleParser'
 import DecimalParser from './table/DecimalParser'
 import BooleanParser from './table/BooleanParser'
+import DateParser from './table/DateParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -32,6 +33,7 @@ export default abstract class TableParser {
     DoubleParser,
     DecimalParser,
     BooleanParser,
+    DateParser,
   ]
 
   /**
