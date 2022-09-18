@@ -18,6 +18,7 @@ import TimeParser from './table/TimeParser'
 import DatetimeParser from './table/DatetimeParser'
 import TimestampParser from './table/TimestampParser'
 import TimestampsParser from './table/TimestampsParser'
+import BinaryParser from './table/BinaryParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -42,6 +43,7 @@ export default abstract class TableParser {
     DatetimeParser,
     TimestampParser,
     TimestampsParser,
+    BinaryParser,
   ]
 
   /**
