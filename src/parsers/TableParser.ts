@@ -23,6 +23,7 @@ import EnumParser from './table/EnumParser'
 import EnuParser from './table/EnuParser'
 import JsonParser from './table/JsonParser'
 import JsonbParser from './table/JsonbParser'
+import UuidParser from './table/UuidParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -52,6 +53,7 @@ export default abstract class TableParser {
     EnuParser,
     JsonParser,
     JsonbParser,
+    UuidParser,
   ]
 
   /**
