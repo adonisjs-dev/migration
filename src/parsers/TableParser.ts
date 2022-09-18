@@ -22,6 +22,7 @@ import BinaryParser from './table/BinaryParser'
 import EnumParser from './table/EnumParser'
 import EnuParser from './table/EnuParser'
 import JsonParser from './table/JsonParser'
+import JsonbParser from './table/JsonbParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -50,6 +51,7 @@ export default abstract class TableParser {
     EnumParser,
     EnuParser,
     JsonParser,
+    JsonbParser,
   ]
 
   /**
