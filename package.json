@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/b01010110/typescript-starter.git"
+    "url": "git+https://github.com/b01010110/adonis-dev-migration.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/b01010110/typescript-starter/issues"
+    "url": "https://github.com/b01010110/adonis-dev-migration/issues"
   },
-  "homepage": "https://github.com/b01010110/typescript-starter#readme",
+  "homepage": "https://github.com/b01010110/adonis-dev-migration#readme",
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "@types/node": "^18.7.14",
