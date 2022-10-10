@@ -1,5 +1,5 @@
 import { SyntaxKind, CallExpression } from 'ts-morph'
-import PropertyParser from './PropertyParser'
+import PropertyParser from './inheritance/PropertyParser'
 
 /**
  * With Schema Parser parses the withSchema method.

@@ -1,6 +1,6 @@
 import { SyntaxKind, CallExpression, ArrowFunction, FunctionExpression } from 'ts-morph'
 import TableParser from '../TableParser'
-import CreatableActionParser from './CreatableActionParser'
+import CreatableActionParser from './inheritance/CreatableActionParser'
 import MigrationAction from '../../actions/MigrationAction'
 import CreateTableAction from '../../actions/schema/CreateTableAction'
 import TableAction from '../../actions/TableAction'
