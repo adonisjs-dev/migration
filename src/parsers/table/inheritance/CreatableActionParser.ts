@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CallExpression } from 'ts-morph'
 import TableMemberParser from './TableMemberParser'
-import TableAction from '../../actions/TableAction'
+import TableAction from '../../../actions/TableAction'
 
 /**
  * Creatable action parser is abstract class for inheritance by parsers.

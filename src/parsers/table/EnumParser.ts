@@ -1,5 +1,5 @@
 import { SyntaxKind, CallExpression } from 'ts-morph'
-import CreatableActionParser from './CreatableActionParser'
+import CreatableActionParser from './inheritance/CreatableActionParser'
 import TableAction from '../../actions/TableAction'
 import EnumAction from '../../actions/table/EnumAction'
 import Value from '../../types/Value'

@@ -1,5 +1,5 @@
 import { SyntaxKind, CallExpression } from 'ts-morph'
-import CreatableActionParser from './CreatableActionParser'
+import CreatableActionParser from './inheritance/CreatableActionParser'
 import TableAction from '../../actions/TableAction'
 import IntegerAction from '../../actions/table/IntegerAction'
 import AbsentColumnNameException from '../../exceptions/AbsentColumnNameException'
