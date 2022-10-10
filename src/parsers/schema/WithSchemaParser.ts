@@ -1,4 +1,4 @@
-import { SyntaxKind, CallExpression } from 'ts-morph'
+import { CallExpression, parseStringLiteral } from '@adonis-dev/parser'
 import PropertyParser from './inheritance/PropertyParser'
 
 /**
@@ -17,10 +17,9 @@ export default abstract class WithSchemaParser extends PropertyParser {
     const properties: { [name: string]: string } = {}
 
     const args = ceNode.getArguments()
-    const arg1 = args[0].asKind(SyntaxKind.StringLiteral)
-    if (!arg1) return properties
 
-    properties.schema = arg1.getLiteralValue()
+    const arg1 = parseStringLiteral(args[0])
+    if (arg1 !== undefined) properties.schema = arg1
 
     return properties
   }

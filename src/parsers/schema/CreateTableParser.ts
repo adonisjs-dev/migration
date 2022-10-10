@@ -1,4 +1,4 @@
-import { SyntaxKind, CallExpression, ArrowFunction, FunctionExpression } from 'ts-morph'
+import { SyntaxKind, CallExpression, ArrowFunction, FunctionExpression } from '@adonis-dev/parser'
 import TableParser from '../TableParser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import MigrationAction from '../../actions/MigrationAction'
@@ -33,8 +33,8 @@ export default abstract class CreateTableParser extends CreatableActionParser {
     const arg1pae = args[0].asKind(SyntaxKind.PropertyAccessExpression)
     if (arg1pae) {
       const paeChildren = arg1pae.forEachChildAsArray()
-      const isThisKeyword = paeChildren[0].asKind(SyntaxKind.ThisKeyword)
-      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier)
+      const isThisKeyword = paeChildren[0].asKind(SyntaxKind.ThisKeyword) //TODO isThis()
+      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier) //TODO parseIdentifier()
       if (isThisKeyword && identifier && identifier.getText() === 'tableName') {
         return ''
       }
