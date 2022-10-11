@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { Project, SourceFile } from 'ts-morph'
+import { Project, SourceFile } from '@adonis-dev/parser'
 import { string } from '@poppinss/utils/build/helpers'
 import MigrationFile from './MigrationFile'
 

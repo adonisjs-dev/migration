@@ -1,4 +1,4 @@
-import ColumnAction from '../table/ColumnAction'
+import ColumnAction from '../ColumnAction'
 import IncrementsOptions from '../../interfaces/IncrementsOptions'
 
 /**

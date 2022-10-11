@@ -1,5 +1,4 @@
-import ColumnAction from '../table/ColumnAction'
-import Value from '../../types/Value'
+import ColumnAction from '../ColumnAction'
 import EnumOptions from '../../interfaces/EnumOptions'
 
 /**
@@ -10,7 +9,7 @@ export default class EnumAction extends ColumnAction {
    * Enum values.
    * The second argument.
    */
-  public values: Value[] = []
+  public values: Array<string | number | boolean> = []
 
   /**
    * Enum options.

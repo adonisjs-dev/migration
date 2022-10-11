@@ -1,4 +1,4 @@
-import { CallExpression } from 'ts-morph'
+import { CallExpression } from '@adonis-dev/parser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import MigrationAction from '../../actions/MigrationAction'
 import DropTableAction from '../../actions/schema/DropTableAction'

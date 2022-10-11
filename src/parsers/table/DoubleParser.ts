@@ -1,8 +1,7 @@
-import { SyntaxKind, CallExpression } from 'ts-morph'
+import { CallExpression, parseNumericNode } from '@adonis-dev/parser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import TableAction from '../../actions/TableAction'
 import DoubleAction from '../../actions/table/DoubleAction'
-import AbsentColumnNameException from '../../exceptions/AbsentColumnNameException'
 
 /**
  * Double parser parses the double column method.
@@ -15,7 +14,7 @@ export default abstract class DoubleParser extends CreatableActionParser {
 
   /**
    * Parse a Call Expression Node.
-   * @throws {AbsentColumnNameException} There is absent a column name in the method.
+   * @throws There is absent a column name in the method.
    */
   public static parse(ceNode: CallExpression): TableAction {
     const action = new DoubleAction()
@@ -26,23 +25,13 @@ export default abstract class DoubleParser extends CreatableActionParser {
   }
 
   /**
-   * Extract a column name from the argument.
-   * @throws {AbsentColumnNameException} There is absent a column name in the method.
-   */
-  private static extractColumnName(ceNode: CallExpression): string {
-    const args = ceNode.getArguments()
-    const arg1sl = args[0]?.asKind(SyntaxKind.StringLiteral)
-    if (!arg1sl) throw new AbsentColumnNameException()
-    return arg1sl.getLiteralValue()
-  }
-
-  /**
    * Extract a precision value from the argument.
    */
   private static extractPrecisionArgument(ceNode: CallExpression): number | undefined {
     const args = ceNode.getArguments()
-    const arg2nl = args[1]?.asKind(SyntaxKind.NumericLiteral)
-    return arg2nl?.getLiteralValue()
+    if (args[1] === undefined) return undefined
+
+    return parseNumericNode(args[1])
   }
 
   /**
@@ -50,7 +39,8 @@ export default abstract class DoubleParser extends CreatableActionParser {
    */
   private static extractScaleArgument(ceNode: CallExpression): number | undefined {
     const args = ceNode.getArguments()
-    const arg3nl = args[2]?.asKind(SyntaxKind.NumericLiteral)
-    return arg3nl?.getLiteralValue()
+    if (args[2] === undefined) return undefined
+
+    return parseNumericNode(args[2])
   }
 }

@@ -1,4 +1,4 @@
-import ColumnAction from '../table/ColumnAction'
+import ColumnAction from '../ColumnAction'
 
 /**
  * Integer action is an object containing information to create or alter an integer column.

@@ -1,4 +1,4 @@
-import { SyntaxKind, CallExpression } from 'ts-morph'
+import { CallExpression, parseBooleanNode } from '@adonis-dev/parser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import TableAction from '../../actions/TableAction'
 import TimestampsAction from '../../actions/table/TimestampsAction'
@@ -27,14 +27,9 @@ export default abstract class TimestampsParser extends CreatableActionParser {
    */
   private static extractUseTimestampTypeArgument(ceNode: CallExpression): boolean | undefined {
     const args = ceNode.getArguments()
+    if (args[0] === undefined) return undefined
 
-    const trueKeyword = args[0]?.asKind(SyntaxKind.TrueKeyword)
-    if (trueKeyword) return true
-
-    const falseKeyword = args[0]?.asKind(SyntaxKind.FalseKeyword)
-    if (falseKeyword) return false
-
-    return undefined
+    return parseBooleanNode(args[0])
   }
 
   /**
@@ -42,13 +37,8 @@ export default abstract class TimestampsParser extends CreatableActionParser {
    */
   private static extractMakeDefaultNowArgument(ceNode: CallExpression): boolean | undefined {
     const args = ceNode.getArguments()
+    if (args[1] === undefined) return undefined
 
-    const trueKeyword = args[1]?.asKind(SyntaxKind.TrueKeyword)
-    if (trueKeyword) return true
-
-    const falseKeyword = args[1]?.asKind(SyntaxKind.FalseKeyword)
-    if (falseKeyword) return false
-
-    return undefined
+    return parseBooleanNode(args[1])
   }
 }

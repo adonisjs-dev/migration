@@ -1,4 +1,4 @@
-import ColumnAction from './ColumnAction'
+import ColumnAction from '../ColumnAction'
 
 /**
  * Date action is an object containing information to create or alter a date column.

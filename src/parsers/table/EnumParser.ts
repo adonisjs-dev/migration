@@ -1,10 +1,15 @@
-import { SyntaxKind, CallExpression } from 'ts-morph'
+import {
+  SyntaxKind,
+  CallExpression,
+  parseObjectNodeAsInterface,
+  ObjectToParse,
+  parseArrayNodeAsKind,
+  LiteralKind,
+} from '@adonis-dev/parser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import TableAction from '../../actions/TableAction'
 import EnumAction from '../../actions/table/EnumAction'
-import Value from '../../types/Value'
 import EnumOptions from '../../interfaces/EnumOptions'
-import AbsentColumnNameException from '../../exceptions/AbsentColumnNameException'
 
 /**
  * Enum parser parses the enum column method.
@@ -17,7 +22,7 @@ export default abstract class EnumParser extends CreatableActionParser {
 
   /**
    * Parse a Call Expression Node.
-   * @throws {AbsentColumnNameException} There is absent a column name in the method.
+   * @throws There is absent a column name in the method.
    */
   public static parse(ceNode: CallExpression): TableAction {
     const action = new EnumAction()
@@ -28,40 +33,20 @@ export default abstract class EnumParser extends CreatableActionParser {
   }
 
   /**
-   * Extract a column name from the argument.
-   * @throws {AbsentColumnNameException} There is absent a column name in the method.
-   */
-  private static extractColumnName(ceNode: CallExpression): string {
-    const args = ceNode.getArguments()
-    const arg1sl = args[0]?.asKind(SyntaxKind.StringLiteral)
-    if (!arg1sl) throw new AbsentColumnNameException()
-    return arg1sl.getLiteralValue()
-  }
-
-  /**
    * Extract values from the argument.
    */
-  private static extractValuesArgument(ceNode: CallExpression): Value[] {
-    const values: Value[] = []
+  private static extractValuesArgument(ceNode: CallExpression): Array<string | number | boolean> {
     const args = ceNode.getArguments()
-    const arg2ale = args[1]?.asKind(SyntaxKind.ArrayLiteralExpression)
-    if (!arg2ale) return values
+    const ale = args[1]?.asKind(SyntaxKind.ArrayLiteralExpression)
+    if (ale === undefined) return []
 
-    const aleChildren = arg2ale.forEachChildAsArray()
+    const aleChildren = ale.forEachChildAsArray()
 
-    aleChildren.forEach((node) => {
-      const stringLiteral = node.asKind(SyntaxKind.StringLiteral)
-      if (stringLiteral) return values.push(stringLiteral.getLiteralValue())
+    if (aleChildren[0] === undefined) return []
 
-      const numericLiteral = node.asKind(SyntaxKind.NumericLiteral)
-      if (numericLiteral) return values.push(numericLiteral.getLiteralValue())
-
-      const trueKeyword = node.asKind(SyntaxKind.TrueKeyword)
-      if (trueKeyword) return values.push(trueKeyword.getLiteralValue())
-
-      const falseKeyword = node.asKind(SyntaxKind.FalseKeyword)
-      if (falseKeyword) return values.push(falseKeyword.getLiteralValue())
-    })
+    const kind = aleChildren[0].getKind() as LiteralKind
+    const values = parseArrayNodeAsKind(args[1], kind)
+    if (values === undefined) return []
 
     return values
   }
@@ -70,60 +55,18 @@ export default abstract class EnumParser extends CreatableActionParser {
    * Extract options from the argument.
    */
   private static extractOptionsArgument(ceNode: CallExpression): EnumOptions {
-    const options: EnumOptions = {}
     const args = ceNode.getArguments()
-    const arg3ole = args[2]?.asKind(SyntaxKind.ObjectLiteralExpression)
-    if (!arg3ole) return options
+    if (args[2] === undefined) return {}
 
-    const unPropNode = arg3ole.getProperty('useNative')
-    if (unPropNode) {
-      const unPropertyAssignment = unPropNode.asKind(SyntaxKind.PropertyAssignment)
-      if (unPropertyAssignment) {
-        const unPAChildren = unPropertyAssignment.forEachChildAsArray()
-
-        const trueKeyword = unPAChildren[1].asKind(SyntaxKind.TrueKeyword)
-        if (trueKeyword) options.useNative = true
-
-        const falseKeyword = unPAChildren[1].asKind(SyntaxKind.FalseKeyword)
-        if (falseKeyword) options.useNative = false
-      }
+    const objectToParse: ObjectToParse = {
+      useNative: SyntaxKind.BooleanKeyword,
+      existingType: SyntaxKind.BooleanKeyword,
+      schemaName: SyntaxKind.StringLiteral,
+      enumName: SyntaxKind.StringLiteral,
     }
 
-    const etPropNode = arg3ole.getProperty('existingType')
-    if (etPropNode) {
-      const etPropertyAssignment = etPropNode.asKind(SyntaxKind.PropertyAssignment)
-      if (etPropertyAssignment) {
-        const etPAChildren = etPropertyAssignment.forEachChildAsArray()
-
-        const trueKeyword = etPAChildren[1].asKind(SyntaxKind.TrueKeyword)
-        if (trueKeyword) options.existingType = true
-
-        const falseKeyword = etPAChildren[1].asKind(SyntaxKind.FalseKeyword)
-        if (falseKeyword) options.existingType = false
-      }
-    }
-
-    const snPropNode = arg3ole.getProperty('schemaName')
-    if (snPropNode) {
-      const snPropertyAssignment = snPropNode.asKind(SyntaxKind.PropertyAssignment)
-      if (snPropertyAssignment) {
-        const snPAChildren = snPropertyAssignment.forEachChildAsArray()
-
-        const stringLiteral = snPAChildren[1].asKind(SyntaxKind.StringLiteral)
-        if (stringLiteral) options.schemaName = stringLiteral.getLiteralValue()
-      }
-    }
-
-    const enPropNode = arg3ole.getProperty('enumName')
-    if (enPropNode) {
-      const enPropertyAssignment = enPropNode.asKind(SyntaxKind.PropertyAssignment)
-      if (enPropertyAssignment) {
-        const enPAChildren = enPropertyAssignment.forEachChildAsArray()
-
-        const stringLiteral = enPAChildren[1].asKind(SyntaxKind.StringLiteral)
-        if (stringLiteral) options.enumName = stringLiteral.getLiteralValue()
-      }
-    }
+    const options = parseObjectNodeAsInterface(args[2], objectToParse)
+    if (options === undefined) return {}
 
     return options
   }

@@ -1,4 +1,4 @@
-import ColumnAction from './ColumnAction'
+import ColumnAction from '../ColumnAction'
 
 /**
  * Binary action is an object containing information to create or alter a binary column.

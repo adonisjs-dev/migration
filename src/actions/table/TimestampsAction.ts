@@ -1,4 +1,4 @@
-import ColumnAction from './ColumnAction'
+import ColumnAction from '../ColumnAction'
 
 /**
  * Timestamps action is an object containing information to create or alter timestamp columns.

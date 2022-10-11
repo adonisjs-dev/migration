@@ -1,4 +1,11 @@
-import { SyntaxKind, CallExpression, ArrowFunction, FunctionExpression } from '@adonis-dev/parser'
+import {
+  SyntaxKind,
+  CallExpression,
+  ArrowFunction,
+  FunctionExpression,
+  isThisNode,
+  parseIdentifierNode,
+} from '@adonis-dev/parser'
 import TableParser from '../TableParser'
 import CreatableActionParser from './inheritance/CreatableActionParser'
 import MigrationAction from '../../actions/MigrationAction'
@@ -33,17 +40,13 @@ export default abstract class CreateTableParser extends CreatableActionParser {
     const arg1pae = args[0].asKind(SyntaxKind.PropertyAccessExpression)
     if (arg1pae) {
       const paeChildren = arg1pae.forEachChildAsArray()
-      const isThisKeyword = paeChildren[0].asKind(SyntaxKind.ThisKeyword) //TODO isThis()
-      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier) //TODO parseIdentifier()
-      if (isThisKeyword && identifier && identifier.getText() === 'tableName') {
-        return ''
-      }
+      const isThis = isThisNode(paeChildren[0])
+      const identifier = parseIdentifierNode(paeChildren[1])
+      if (isThis && identifier === 'tableName') return ''
     }
 
     const stringLiteral = args[0].asKind(SyntaxKind.StringLiteral)
-    if (stringLiteral) {
-      return stringLiteral.getLiteralValue()
-    }
+    if (stringLiteral) return stringLiteral.getLiteralValue()
 
     return ''
   }

@@ -1,4 +1,4 @@
-import ColumnAction from './ColumnAction'
+import ColumnAction from '../ColumnAction'
 import DatetimeOptions from '../../interfaces/DatetimeOptions'
 
 /**

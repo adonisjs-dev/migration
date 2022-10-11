@@ -1,4 +1,4 @@
-import { SourceFile, SyntaxKind, MethodDeclaration } from 'ts-morph'
+import { SourceFile, SyntaxKind, MethodDeclaration } from '@adonis-dev/parser'
 import SchemaParser from './SchemaParser'
 import MigrationAction from '../actions/MigrationAction'
 
@@ -10,6 +10,7 @@ import MigrationAction from '../actions/MigrationAction'
 export default abstract class MigrationParser {
   /**
    * Extract the table name.
+   * @throws There is absent a table name in the class.
    */
   public static extractTableName(sourceFile: SourceFile): string {
     const defaultClass = sourceFile.getClassOrThrow((c) => c.isDefaultExport())
@@ -20,6 +21,7 @@ export default abstract class MigrationParser {
 
   /**
    * Parse the up method.
+   * @throws There is absent the up method.
    */
   public static parseUpMethod(sourceFile: SourceFile): MigrationAction[] {
     const upMethod = this.upMethod(sourceFile)
@@ -28,6 +30,7 @@ export default abstract class MigrationParser {
 
   /**
    * Parse the down method.
+   * @throws There is absent the down method.
    */
   public static parseDownMethod(sourceFile: SourceFile): MigrationAction[] {
     const downMethod = this.downMethod(sourceFile)
@@ -36,6 +39,7 @@ export default abstract class MigrationParser {
 
   /**
    * Get the up method node.
+   * @throws There is absent the up method.
    */
   private static upMethod(sourceFile: SourceFile): MethodDeclaration {
     const defaultClass = sourceFile.getClassOrThrow((c) => c.isDefaultExport())
@@ -44,6 +48,7 @@ export default abstract class MigrationParser {
 
   /**
    * Get the down method node.
+   * @throws There is absent the down method.
    */
   private static downMethod(sourceFile: SourceFile): MethodDeclaration {
     const defaultClass = sourceFile.getClassOrThrow((c) => c.isDefaultExport())

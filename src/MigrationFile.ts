@@ -1,4 +1,4 @@
-import { SourceFile } from 'ts-morph'
+import { SourceFile } from '@adonis-dev/parser'
 import MigrationParser from './parsers/MigrationParser'
 import MigrationAction from './actions/MigrationAction'
 

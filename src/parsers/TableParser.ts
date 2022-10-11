@@ -1,4 +1,4 @@
-import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier } from 'ts-morph'
+import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier, parseIdentifierNode } from '@adonis-dev/parser'
 import TableAction from '../actions/TableAction'
 import TableMemberParser from './table/inheritance/TableMemberParser'
 import CreatableActionParser from './table/inheritance/CreatableActionParser'
@@ -66,15 +66,15 @@ export default abstract class TableParser {
    */
   public static parse(funcNode: ArrowFunction | FunctionExpression): TableAction[] {
     const actions: TableAction[] = []
+
     const tableIds = this.getTableIdentifiers(funcNode)
+
     tableIds.forEach((tableId) => {
       const action = this.parseAction(tableId)
       if (!action) return
 
       const properties = this.parseProperties(tableId)
-
       Object.assign(action, properties)
-
       actions.push(action)
     })
 
@@ -88,18 +88,15 @@ export default abstract class TableParser {
     let currentNode = tableIdentifier.getParentIfKind(SyntaxKind.PropertyAccessExpression)
 
     while (currentNode) {
+      const ceNode = currentNode.getParentIfKind(SyntaxKind.CallExpression)
+      if (ceNode === undefined) return undefined
+
       const paeChildren = currentNode.forEachChildAsArray()
 
-      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier)
-      if (!identifier) return undefined
-
-      const identifierText = identifier.getText()
+      const identifierText = parseIdentifierNode(paeChildren[1])
+      if (identifierText === undefined) return undefined
 
       const parser = this.findParserByIdentifier(identifierText, this.actionParsers)
-
-      const ceNode = currentNode.getParentIfKind(SyntaxKind.CallExpression)
-      if (!ceNode) return undefined
-
       if (parser) {
         try {
           return parser.parse(ceNode)
@@ -117,23 +114,21 @@ export default abstract class TableParser {
   /**
    * Parse properties.
    */
-  private static parseProperties(tableIdentifier: Identifier): { [name: string]: string } {
-    const properties: { [name: string]: string } = {}
+  private static parseProperties(tableIdentifier: Identifier): { [key: string]: string } {
+    const properties: { [key: string]: string } = {}
+
     let currentNode = tableIdentifier.getParentIfKind(SyntaxKind.PropertyAccessExpression)
 
     while (currentNode) {
+      const ceNode = currentNode.getParentIfKind(SyntaxKind.CallExpression)
+      if (ceNode === undefined) return properties
+
       const paeChildren = currentNode.forEachChildAsArray()
 
-      const identifier = paeChildren[1].asKind(SyntaxKind.Identifier)
-      if (!identifier) return properties
-
-      const identifierText = identifier.getText()
+      const identifierText = parseIdentifierNode(paeChildren[1])
+      if (identifierText === undefined) return properties
 
       const parser = this.findParserByIdentifier(identifierText, this.propertyParsers)
-
-      const ceNode = currentNode.getParentIfKind(SyntaxKind.CallExpression)
-      if (!ceNode) return properties
-
       if (parser) {
         const parserProps = parser.parse(ceNode)
         Object.assign(properties, parserProps)
@@ -153,9 +148,9 @@ export default abstract class TableParser {
 
     const tablePropertyAccessExpressions = propertyAccessExpressions.filter((paeNode) => {
       const paeChildren = paeNode.forEachChildAsArray()
-      const identifier = paeChildren[0].asKind(SyntaxKind.Identifier)
+      const identifier = parseIdentifierNode(paeChildren[0])
 
-      return identifier && identifier.getText() === 'table'
+      return identifier === 'table'
     })
 
     const tableIdentifiers = tablePropertyAccessExpressions.map((paeNode) => {

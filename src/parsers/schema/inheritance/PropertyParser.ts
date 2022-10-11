@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CallExpression } from 'ts-morph'
+import { CallExpression } from '@adonis-dev/parser'
 import SchemaMemberParser from './SchemaMemberParser'
 
 /**

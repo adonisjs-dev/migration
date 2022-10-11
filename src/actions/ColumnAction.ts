@@ -1,4 +1,4 @@
-import TableAction from '../TableAction'
+import TableAction from './TableAction'
 
 /**
  * Column action is abstract class for inheritance by actions.

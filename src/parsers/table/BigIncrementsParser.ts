@@ -1,4 +1,4 @@
-import { CallExpression } from 'ts-morph'
+import { CallExpression } from '@adonis-dev/parser'
 import IncrementsParser from './IncrementsParser'
 import TableAction from '../../actions/TableAction'
 import IncrementsAction from '../../actions/table/IncrementsAction'
@@ -15,7 +15,7 @@ export default abstract class BigIncrementsParser extends IncrementsParser {
 
   /**
    * Parse a Call Expression Node.
-   * @throws {AbsentColumnNameException} There is absent a column name in the method.
+   * @throws There is absent a column name in the method.
    */
   public static parse(ceNode: CallExpression): TableAction {
     const tableAction = super.parse(ceNode)
