@@ -1,12 +1,12 @@
 import { CallExpression } from '@adonis-dev/parser'
-import CreatableActionParser from './inheritance/CreatableActionParser'
-import MigrationAction from '../../actions/MigrationAction'
+import SchemaActionParser from './inheritance/SchemaActionParser'
+import SchemaAction from '../../actions/SchemaAction'
 import DropTableAction from '../../actions/schema/DropTableAction'
 
 /**
  * Drop table parser parses the dropTable method.
  */
-export default abstract class DropTableParser extends CreatableActionParser {
+export default abstract class DropTableParser extends SchemaActionParser {
   /**
    * Identifier.
    */
@@ -15,7 +15,7 @@ export default abstract class DropTableParser extends CreatableActionParser {
   /**
    * Parse a Call Expression Node.
    */
-  public static parse(ceNode: CallExpression): MigrationAction {
+  public static parse(ceNode: CallExpression): SchemaAction {
     return new DropTableAction()
   }
 }

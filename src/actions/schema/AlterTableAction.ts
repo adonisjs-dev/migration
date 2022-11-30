@@ -1,10 +1,10 @@
-import MigrationAction from '../MigrationAction'
+import SchemaAction from '../SchemaAction'
 import TableAction from '../TableAction'
 
 /**
  * Alter table action is an object containing information to alter a table.
  */
-export default class AlterTableAction extends MigrationAction {
+export default class AlterTableAction extends SchemaAction {
   /**
    * Table name.
    */

@@ -1,29 +1,29 @@
 import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier, parseIdentifierNode } from '@adonis-dev/parser'
 import TableAction from '../actions/TableAction'
-import TableMemberParser from './table/inheritance/TableMemberParser'
-import CreatableActionParser from './table/inheritance/CreatableActionParser'
-import PropertyParser from './table/inheritance/PropertyParser'
-import IncrementsParser from './table/IncrementsParser'
-import BigIncrementsParser from './table/BigIncrementsParser'
-import IntegerParser from './table/IntegerParser'
-import BigIntegerParser from './table/BigIntegerParser'
-import TextParser from './table/TextParser'
-import StringParser from './table/StringParser'
-import FloatParser from './table/FloatParser'
-import DoubleParser from './table/DoubleParser'
-import DecimalParser from './table/DecimalParser'
-import BooleanParser from './table/BooleanParser'
-import DateParser from './table/DateParser'
-import TimeParser from './table/TimeParser'
-import DatetimeParser from './table/DatetimeParser'
-import TimestampParser from './table/TimestampParser'
-import TimestampsParser from './table/TimestampsParser'
-import BinaryParser from './table/BinaryParser'
-import EnumParser from './table/EnumParser'
-import EnuParser from './table/EnuParser'
-import JsonParser from './table/JsonParser'
-import JsonbParser from './table/JsonbParser'
-import UuidParser from './table/UuidParser'
+import ColumnMemberParser from './column/inheritance/ColumnMemberParser'
+import ColumnActionParser from './column/inheritance/ColumnActionParser'
+import ColumnPropertyParser from './column/inheritance/ColumnPropertyParser'
+import IncrementsParser from './column/IncrementsParser'
+import BigIncrementsParser from './column/BigIncrementsParser'
+import IntegerParser from './column/IntegerParser'
+import BigIntegerParser from './column/BigIntegerParser'
+import TextParser from './column/TextParser'
+import StringParser from './column/StringParser'
+import FloatParser from './column/FloatParser'
+import DoubleParser from './column/DoubleParser'
+import DecimalParser from './column/DecimalParser'
+import BooleanParser from './column/BooleanParser'
+import DateParser from './column/DateParser'
+import TimeParser from './column/TimeParser'
+import DatetimeParser from './column/DatetimeParser'
+import TimestampParser from './column/TimestampParser'
+import TimestampsParser from './column/TimestampsParser'
+import BinaryParser from './column/BinaryParser'
+import EnumParser from './column/EnumParser'
+import EnuParser from './column/EnuParser'
+import JsonParser from './column/JsonParser'
+import JsonbParser from './column/JsonbParser'
+import UuidParser from './column/UuidParser'
 
 /**
  * Table parser parses table builder into table actions.
@@ -32,7 +32,7 @@ export default abstract class TableParser {
   /**
    * An array of the nested creatable action parsers.
    */
-  private static readonly actionParsers: typeof CreatableActionParser[] = [
+  private static readonly actionParsers: typeof ColumnActionParser[] = [
     IncrementsParser,
     BigIncrementsParser,
     IntegerParser,
@@ -59,7 +59,7 @@ export default abstract class TableParser {
   /**
    * An array of the nested property parsers.
    */
-  private static readonly propertyParsers: typeof PropertyParser[] = []
+  private static readonly propertyParsers: typeof ColumnPropertyParser[] = []
 
   /**
    * Parse a function.
@@ -164,7 +164,7 @@ export default abstract class TableParser {
   /**
    * Find a parser by identifier.
    */
-  private static findParserByIdentifier<T extends typeof TableMemberParser>(
+  private static findParserByIdentifier<T extends typeof ColumnMemberParser>(
     identifier: string,
     parsers: T[]
   ): T | undefined {

@@ -1,6 +1,6 @@
 import { SourceFile, SyntaxKind, MethodDeclaration } from '@adonis-dev/parser'
 import SchemaParser from './SchemaParser'
-import MigrationAction from '../actions/MigrationAction'
+import SchemaAction from '../actions/SchemaAction'
 
 /**
  * Migration Parser works with the current migration file.
@@ -23,7 +23,7 @@ export default abstract class MigrationParser {
    * Parse the up method.
    * @throws There is absent the up method.
    */
-  public static parseUpMethod(sourceFile: SourceFile): MigrationAction[] {
+  public static parseUpMethod(sourceFile: SourceFile): SchemaAction[] {
     const upMethod = this.upMethod(sourceFile)
     return SchemaParser.parse(upMethod)
   }
@@ -32,7 +32,7 @@ export default abstract class MigrationParser {
    * Parse the down method.
    * @throws There is absent the down method.
    */
-  public static parseDownMethod(sourceFile: SourceFile): MigrationAction[] {
+  public static parseDownMethod(sourceFile: SourceFile): SchemaAction[] {
     const downMethod = this.downMethod(sourceFile)
     return SchemaParser.parse(downMethod)
   }

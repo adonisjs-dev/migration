@@ -1,10 +1,11 @@
 import { CallExpression, parseStringNode } from '@adonis-dev/parser'
-import PropertyParser from './inheritance/PropertyParser'
+import SchemaPropertyParser from './inheritance/SchemaPropertyParser'
+import ISchemaProperties from './inheritance/ISchemaProperties'
 
 /**
  * With Schema Parser parses the withSchema method.
  */
-export default abstract class WithSchemaParser extends PropertyParser {
+export default abstract class WithSchemaParser extends SchemaPropertyParser {
   /**
    * Identifier.
    */
@@ -13,8 +14,8 @@ export default abstract class WithSchemaParser extends PropertyParser {
   /**
    * Parse a Call Expression Node.
    */
-  public static parse(ceNode: CallExpression): { [key: string]: string } {
-    const properties: { [key: string]: string } = {}
+  public static parse(ceNode: CallExpression): ISchemaProperties {
+    const properties: ISchemaProperties = {}
 
     const args = ceNode.getArguments()
 

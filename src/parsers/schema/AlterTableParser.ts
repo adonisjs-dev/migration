@@ -1,12 +1,12 @@
 import { CallExpression } from '@adonis-dev/parser'
-import CreatableActionParser from './inheritance/CreatableActionParser'
-import MigrationAction from '../../actions/MigrationAction'
+import SchemaActionParser from './inheritance/SchemaActionParser'
+import SchemaAction from '../../actions/SchemaAction'
 import AlterTableAction from '../../actions/schema/AlterTableAction'
 
 /**
  * Alter table parser parses the alterTable method.
  */
-export default abstract class AlterTableParser extends CreatableActionParser {
+export default abstract class AlterTableParser extends SchemaActionParser {
   /**
    * Identifier.
    */
@@ -15,7 +15,7 @@ export default abstract class AlterTableParser extends CreatableActionParser {
   /**
    * Parse a Call Expression Node.
    */
-  public static parse(ceNode: CallExpression): MigrationAction {
+  public static parse(ceNode: CallExpression): SchemaAction {
     return new AlterTableAction()
   }
 }

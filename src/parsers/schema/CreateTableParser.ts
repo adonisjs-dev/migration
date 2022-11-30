@@ -7,15 +7,15 @@ import {
   parseIdentifierNode,
 } from '@adonis-dev/parser'
 import TableParser from '../TableParser'
-import CreatableActionParser from './inheritance/CreatableActionParser'
-import MigrationAction from '../../actions/MigrationAction'
+import SchemaActionParser from './inheritance/SchemaActionParser'
+import SchemaAction from '../../actions/SchemaAction'
 import CreateTableAction from '../../actions/schema/CreateTableAction'
 import TableAction from '../../actions/TableAction'
 
 /**
  * Create table parser parses the createTable method.
  */
-export default abstract class CreateTableParser extends CreatableActionParser {
+export default abstract class CreateTableParser extends SchemaActionParser {
   /**
    * Identifier.
    */
@@ -24,7 +24,7 @@ export default abstract class CreateTableParser extends CreatableActionParser {
   /**
    * Parse a Call Expression Node.
    */
-  public static parse(ceNode: CallExpression): MigrationAction {
+  public static parse(ceNode: CallExpression): SchemaAction {
     const action = new CreateTableAction()
     action.name = this.extractTableName(ceNode)
     action.actions = this.parseTableActions(ceNode)

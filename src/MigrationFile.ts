@@ -1,6 +1,6 @@
 import { SourceFile } from '@adonis-dev/parser'
 import MigrationParser from './parsers/MigrationParser'
-import MigrationAction from './actions/MigrationAction'
+import SchemaAction from './actions/SchemaAction'
 
 /**
  * Migration file is the migration file object that located in the file system.
@@ -15,12 +15,12 @@ export default class MigrationFile {
   /**
    * Method up.
    */
-  public up: MigrationAction[] = []
+  public up: SchemaAction[] = []
 
   /**
    * Method down.
    */
-  public down: MigrationAction[] = []
+  public down: SchemaAction[] = []
 
   /**
    * Source file.

@@ -1,10 +1,10 @@
-import MigrationAction from '../MigrationAction'
+import SchemaAction from '../SchemaAction'
 import TableAction from '../TableAction'
 
 /**
  * Create table action is an object containing information to create a table.
  */
-export default class CreateTableAction extends MigrationAction {
+export default class CreateTableAction extends SchemaAction {
   /**
    * Table name.
    */

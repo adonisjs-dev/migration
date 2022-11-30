@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Project, SourceFile } from '@adonis-dev/parser'
-import { string } from '@poppinss/utils/build/helpers'
+import { string as strHelp } from '@poppinss/utils/build/helpers'
 import MigrationFile from './MigrationFile'
 
 /**
@@ -85,7 +85,7 @@ export default class MigrationController {
    * Generate a filename with a timestamp prefix.
    */
   private generateFileName(tableName: string): string {
-    tableName = string.pascalCase(tableName)
+    tableName = strHelp.pascalCase(tableName)
     return `${Date.now()}_${tableName}.ts`
   }
 }

@@ -5,10 +5,11 @@ import {
   parseIdentifierNode,
   isThisNode,
 } from '@adonis-dev/parser'
-import MigrationAction from '../actions/MigrationAction'
+import SchemaAction from '../actions/SchemaAction'
 import SchemaMemberParser from './schema/inheritance/SchemaMemberParser'
-import CreatableActionParser from './schema/inheritance/CreatableActionParser'
-import PropertyParser from './schema/inheritance/PropertyParser'
+import SchemaActionParser from './schema/inheritance/SchemaActionParser'
+import SchemaPropertyParser from './schema/inheritance/SchemaPropertyParser'
+import ISchemaProperties from './schema/inheritance/ISchemaProperties'
 import AlterTableParser from './schema/AlterTableParser'
 import CreateTableParser from './schema/CreateTableParser'
 import DropTableParser from './schema/DropTableParser'
@@ -22,7 +23,7 @@ export default abstract class SchemaParser {
   /**
    * An array of the nested creatable action parsers.
    */
-  private static readonly actionParsers: typeof CreatableActionParser[] = [
+  private static readonly actionParsers: typeof SchemaActionParser[] = [
     AlterTableParser,
     CreateTableParser,
     DropTableParser,
@@ -32,13 +33,13 @@ export default abstract class SchemaParser {
   /**
    * An array of the nested property parsers.
    */
-  private static readonly propertyParsers: typeof PropertyParser[] = [WithSchemaParser]
+  private static readonly propertyParsers: typeof SchemaPropertyParser[] = [WithSchemaParser]
 
   /**
    * Parse a method.
    */
-  public static parse(mdNode: MethodDeclaration): MigrationAction[] {
-    const actions: MigrationAction[] = []
+  public static parse(mdNode: MethodDeclaration): SchemaAction[] {
+    const actions: SchemaAction[] = []
 
     const thisSchemaPAEs = this.getThisSchemaPropertyAccessExpressions(mdNode)
 
@@ -57,7 +58,7 @@ export default abstract class SchemaParser {
   /**
    * Parse an action.
    */
-  private static parseAction(paeNode: PropertyAccessExpression): MigrationAction | undefined {
+  private static parseAction(paeNode: PropertyAccessExpression): SchemaAction | undefined {
     let currentNode = paeNode.getParentIfKind(SyntaxKind.PropertyAccessExpression)
 
     while (currentNode) {
@@ -81,8 +82,8 @@ export default abstract class SchemaParser {
   /**
    * Parse properties.
    */
-  private static parseProperties(paeNode: PropertyAccessExpression): { [key: string]: string } {
-    const properties: { [key: string]: string } = {}
+  private static parseProperties(paeNode: PropertyAccessExpression): ISchemaProperties {
+    const properties: ISchemaProperties = {}
 
     let currentNode = paeNode.getParentIfKind(SyntaxKind.PropertyAccessExpression)
 
@@ -112,7 +113,7 @@ export default abstract class SchemaParser {
    */
   private static getThisSchemaPropertyAccessExpressions(mdNode: MethodDeclaration): PropertyAccessExpression[] {
     const propertyAccessExpressions = mdNode.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression)
-    
+
     const thisSchemaPropertyAccessExpressions = propertyAccessExpressions.filter((paeNode) => {
       const paeChildren = paeNode.forEachChildAsArray()
       const isThis = isThisNode(paeChildren[0])
