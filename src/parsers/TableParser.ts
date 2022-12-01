@@ -1,8 +1,12 @@
 import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier, parseIdentifierNode } from '@adonis-dev/parser'
 import TableAction from '../actions/TableAction'
+import ColumnAction from '../actions/ColumnAction'
+
 import ColumnMemberParser from './column/inheritance/ColumnMemberParser'
 import ColumnActionParser from './column/inheritance/ColumnActionParser'
 import ColumnPropertyParser from './column/inheritance/ColumnPropertyParser'
+import IColumnProperties from './column/inheritance/IColumnProperties'
+
 import IncrementsParser from './column/IncrementsParser'
 import BigIncrementsParser from './column/BigIncrementsParser'
 import IntegerParser from './column/IntegerParser'
@@ -25,14 +29,21 @@ import JsonParser from './column/JsonParser'
 import JsonbParser from './column/JsonbParser'
 import UuidParser from './column/UuidParser'
 
+import TableMemberParser from './table/inheritance/TableMemberParser'
+import TableActionParser from './table/inheritance/TableActionParser'
+import TablePropertyParser from './table/inheritance/TablePropertyParser'
+import ITableProperties from './table/inheritance/ITableProperties'
+
+import DropColumnParser from './table/DropColumnParser'
+
 /**
  * Table parser parses table builder into table actions.
  */
 export default abstract class TableParser {
   /**
-   * An array of the nested creatable action parsers.
+   * An array of the nested column action parsers.
    */
-  private static readonly actionParsers: typeof ColumnActionParser[] = [
+  private static readonly columnActionParsers: typeof ColumnActionParser[] = [
     IncrementsParser,
     BigIncrementsParser,
     IntegerParser,
@@ -57,9 +68,27 @@ export default abstract class TableParser {
   ]
 
   /**
-   * An array of the nested property parsers.
+   * An array of the nested column property parsers.
    */
-  private static readonly propertyParsers: typeof ColumnPropertyParser[] = []
+  private static readonly columnPropertyParsers: typeof ColumnPropertyParser[] = []
+
+  /**
+   * An array of the nested table action parsers.
+   */
+  private static readonly tableActionParsers: typeof TableActionParser[] = [DropColumnParser]
+
+  /**
+   * An array of the nested table property parsers.
+   */
+  private static readonly tablePropertyParsers: typeof TablePropertyParser[] = []
+
+  /**
+   * An array of the nested action parsers.
+   */
+  private static readonly actionParsers: typeof this.columnActionParsers | typeof this.tableActionParsers = [
+    ...this.columnActionParsers,
+    ...this.tableActionParsers,
+  ]
 
   /**
    * Parse a function.
@@ -73,7 +102,8 @@ export default abstract class TableParser {
       const action = this.parseAction(tableId)
       if (!action) return
 
-      const properties = this.parseProperties(tableId)
+      const propertyParsers = action instanceof ColumnAction ? this.columnPropertyParsers : this.tablePropertyParsers
+      const properties = this.parseProperties(tableId, propertyParsers)
       Object.assign(action, properties)
       actions.push(action)
     })
@@ -114,8 +144,12 @@ export default abstract class TableParser {
   /**
    * Parse properties.
    */
-  private static parseProperties(tableIdentifier: Identifier): { [key: string]: string } {
-    const properties: { [key: string]: string } = {}
+  private static parseProperties<T extends Array<typeof ColumnPropertyParser | typeof TablePropertyParser>>(
+    tableIdentifier: Identifier,
+    propertyParsers: T
+  ): T extends typeof ColumnPropertyParser[] ? IColumnProperties : ITableProperties {
+    type IProperties = T extends typeof ColumnPropertyParser[] ? IColumnProperties : ITableProperties
+    const properties: IProperties = {} as IProperties
 
     let currentNode = tableIdentifier.getParentIfKind(SyntaxKind.PropertyAccessExpression)
 
@@ -128,7 +162,7 @@ export default abstract class TableParser {
       const identifierText = parseIdentifierNode(paeChildren[1])
       if (identifierText === undefined) return properties
 
-      const parser = this.findParserByIdentifier(identifierText, this.propertyParsers)
+      const parser = this.findParserByIdentifier(identifierText, propertyParsers)
       if (parser) {
         const parserProps = parser.parse(ceNode)
         Object.assign(properties, parserProps)
@@ -164,7 +198,7 @@ export default abstract class TableParser {
   /**
    * Find a parser by identifier.
    */
-  private static findParserByIdentifier<T extends typeof ColumnMemberParser>(
+  private static findParserByIdentifier<T extends typeof ColumnMemberParser | typeof TableMemberParser>(
     identifier: string,
     parsers: T[]
   ): T | undefined {
