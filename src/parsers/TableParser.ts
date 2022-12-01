@@ -1,8 +1,8 @@
 import { SyntaxKind, ArrowFunction, FunctionExpression, Identifier, parseIdentifierNode } from '@adonis-dev/parser'
+import ParentParser from './inheritance/ParentParser'
 import TableAction from '../actions/TableAction'
 import ColumnAction from '../actions/ColumnAction'
 
-import ColumnMemberParser from './column/inheritance/ColumnMemberParser'
 import ColumnActionParser from './column/inheritance/ColumnActionParser'
 import ColumnPropertyParser from './column/inheritance/ColumnPropertyParser'
 import IColumnProperties from './column/inheritance/IColumnProperties'
@@ -29,7 +29,6 @@ import JsonParser from './column/JsonParser'
 import JsonbParser from './column/JsonbParser'
 import UuidParser from './column/UuidParser'
 
-import TableMemberParser from './table/inheritance/TableMemberParser'
 import TableActionParser from './table/inheritance/TableActionParser'
 import TablePropertyParser from './table/inheritance/TablePropertyParser'
 import ITableProperties from './table/inheritance/ITableProperties'
@@ -39,7 +38,7 @@ import DropColumnParser from './table/DropColumnParser'
 /**
  * Table parser parses table builder into table actions.
  */
-export default abstract class TableParser {
+export default abstract class TableParser extends ParentParser {
   /**
    * An array of the nested column action parsers.
    */
@@ -85,7 +84,7 @@ export default abstract class TableParser {
   /**
    * An array of the nested action parsers.
    */
-  private static readonly actionParsers: typeof this.columnActionParsers | typeof this.tableActionParsers = [
+  private static readonly actionParsers: Array<typeof ColumnPropertyParser | typeof TablePropertyParser> = [
     ...this.columnActionParsers,
     ...this.tableActionParsers,
   ]
@@ -193,21 +192,5 @@ export default abstract class TableParser {
     })
 
     return tableIdentifiers
-  }
-
-  /**
-   * Find a parser by identifier.
-   */
-  private static findParserByIdentifier<T extends typeof ColumnMemberParser | typeof TableMemberParser>(
-    identifier: string,
-    parsers: T[]
-  ): T | undefined {
-    for (let i = 0; i < parsers.length; i++) {
-      if (parsers[i].identifier === identifier) {
-        return parsers[i]
-      }
-    }
-
-    return undefined
   }
 }

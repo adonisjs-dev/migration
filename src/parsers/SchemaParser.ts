@@ -5,11 +5,13 @@ import {
   parseIdentifierNode,
   isThisNode,
 } from '@adonis-dev/parser'
+import ParentParser from './inheritance/ParentParser'
 import SchemaAction from '../actions/SchemaAction'
-import SchemaMemberParser from './schema/inheritance/SchemaMemberParser'
+
 import SchemaActionParser from './schema/inheritance/SchemaActionParser'
 import SchemaPropertyParser from './schema/inheritance/SchemaPropertyParser'
 import ISchemaProperties from './schema/inheritance/ISchemaProperties'
+
 import AlterTableParser from './schema/AlterTableParser'
 import CreateTableParser from './schema/CreateTableParser'
 import DropTableParser from './schema/DropTableParser'
@@ -19,7 +21,7 @@ import WithSchemaParser from './schema/WithSchemaParser'
 /**
  * Schema parser parses schema builder into migration actions.
  */
-export default abstract class SchemaParser {
+export default abstract class SchemaParser extends ParentParser {
   /**
    * An array of the nested creatable action parsers.
    */
@@ -123,21 +125,5 @@ export default abstract class SchemaParser {
     })
 
     return thisSchemaPropertyAccessExpressions
-  }
-
-  /**
-   * Find a parser by identifier.
-   */
-  private static findParserByIdentifier<T extends typeof SchemaMemberParser>(
-    identifier: string,
-    parsers: T[]
-  ): T | undefined {
-    for (let i = 0; i < parsers.length; i++) {
-      if (parsers[i].identifier === identifier) {
-        return parsers[i]
-      }
-    }
-
-    return undefined
   }
 }

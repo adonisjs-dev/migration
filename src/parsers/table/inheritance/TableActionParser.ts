@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CallExpression } from '@adonis-dev/parser'
-import TableMemberParser from './TableMemberParser'
+import MemberParser from '../../inheritance/MemberParser'
 import TableAction from '../../../actions/TableAction'
 
 /**
  * Table action parser is abstract class for inheritance by parsers.
  */
-export default abstract class TableActionParser extends TableMemberParser {
+export default abstract class TableActionParser extends MemberParser {
   /**
    * Parse a Call Expression Node.
    */
