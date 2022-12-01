@@ -1,3 +1,3 @@
 export default interface IColumnProperties {
-  alter?: boolean
+  isAlter?: boolean
 }
