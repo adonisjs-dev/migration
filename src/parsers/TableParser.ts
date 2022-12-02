@@ -30,6 +30,8 @@ import JsonbParser from './column/JsonbParser'
 import UuidParser from './column/UuidParser'
 
 import AlterParser from './column/method/AlterParser'
+import NotNullableParser from './column/method/NotNullableParser'
+import NullableParser from './column/method/NullableParser'
 
 import TableActionParser from './table/inheritance/TableActionParser'
 import TablePropertyParser from './table/inheritance/TablePropertyParser'
@@ -71,7 +73,11 @@ export default abstract class TableParser extends ParentParser {
   /**
    * An array of the nested column property parsers.
    */
-  private static readonly columnPropertyParsers: typeof ColumnPropertyParser[] = [AlterParser]
+  private static readonly columnPropertyParsers: typeof ColumnPropertyParser[] = [
+    AlterParser,
+    NotNullableParser,
+    NullableParser,
+  ]
 
   /**
    * An array of the nested table action parsers.
