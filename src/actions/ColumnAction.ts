@@ -1,7 +1,7 @@
 import TableAction from './TableAction'
 
 /**
- * Column action is abstract class for inheritance by actions.
+ * For inheritance by column actions.
  */
 export default abstract class ColumnAction extends TableAction {
   /**
@@ -10,7 +10,12 @@ export default abstract class ColumnAction extends TableAction {
   public name = ''
 
   /**
-   * Altering or creating the column.
+   * Altering or creating a column.
    */
   public isAlter = false
+
+  /**
+   * Is a column nullable.
+   */
+  public isNullable = true
 }
