@@ -1,4 +1,4 @@
 /**
- * Table action is abstract class for inheritance by actions.
+ * For inheritance by table actions.
  */
 export default abstract class TableAction {}
