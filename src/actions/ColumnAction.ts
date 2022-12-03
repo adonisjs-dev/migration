@@ -1,4 +1,5 @@
 import TableAction from './TableAction'
+import ColumnMethodAction from './ColumnMethodAction'
 
 /**
  * For inheritance by column actions.
@@ -10,12 +11,7 @@ export default abstract class ColumnAction extends TableAction {
   public name = ''
 
   /**
-   * Altering or creating a column.
+   * Column method actions.
    */
-  public isAlter = false
-
-  /**
-   * Is a column nullable.
-   */
-  public isNullable = true
+  public actions: ColumnMethodAction[] = []
 }
